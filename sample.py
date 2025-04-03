@@ -1,7 +1,7 @@
 import os
 import requests
 from typing import List
-from exam import Order, APIResponse, APIException, DatabaseService, APIClient, OrderProcessingService
+from order import Order, APIResponse, APIException, DatabaseService, APIClient, OrderProcessingService
 
 
 class MockDatabaseService(DatabaseService):
