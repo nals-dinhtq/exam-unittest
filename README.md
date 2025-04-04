@@ -120,12 +120,23 @@ This submission attempts to meet the specified evaluation criteria:
 > *(Insert screenshot(s) of the `pytest --cov=order_processing` command output here)*
 >
 > ```
-> =========== test session starts ===========
-> ... tests running ...
+> ============================================================================= tests coverage =============================================================================
+> ____________________________________________________________ coverage: platform darwin, python 3.12.4-final-0 ____________________________________________________________
 >
->
-> ============ XX passed in Xs =============
-> ```
+> Name                                     Stmts   Miss Branch BrPart  Cover   Missing
+> ------------------------------------------------------------------------------------
+> order_processing/__init__.py                 0      0      0      0   100%
+> order_processing/constants.py               26      0      0      0   100%
+> order_processing/exceptions.py               8      0      0      0   100%
+> order_processing/models.py                  42      0      0      0   100%
+> order_processing/order_processor.py        144      0     50      3    98%   210->202, 254->253, 263->262
+> order_processing/services/__init__.py        0      0      0      0   100%
+> order_processing/services/exporters.py      37      0     12      1    98%   82->81
+> ------------------------------------------------------------------------------------
+> TOTAL                                      257      0     62      4    99%
+> Coverage HTML written to dir htmlcov
+> =========================================================================== 43 passed in 0.25s ===========================================================================
+> > ```
 >
 
 ---
