@@ -1,0 +1,19 @@
+ [run]
+  branch = True
+  source = order_processing
+  omit =
+      order_processing/main.py
+      order_processing/services/api_client.py
+      order_processing/services/database.py
+      order_processing/config.py
+      order_processing/interfaces.py
+      */__pycache__/*
+      .venv/*
+      venv/*
+      .git/*
+      .tox/*
+      tests/*
+
+  [report]
+  show_missing = True
+  # skip_covered = False

@@ -1,0 +1,110 @@
+repos:
+  # Basic file checks and validations
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: debug-statements
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-ast # Validate Python syntax
+
+  # Code formatting with Black
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        args: ["--line-length=120"]
+        language_version: python3
+
+  # Import sorting with isort
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile", "black", "--filter-files"]
+
+  # Linting with Flake8 and plugins
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          [
+            "flake8-docstrings>=1.7.0",
+            "flake8-comprehensions>=3.14.0",
+            "flake8-bugbear>=23.9.16",
+            "flake8-annotations>=3.0.1",
+            "flake8-bandit>=4.1.1",
+            "flake8-eradicate>=1.5.0",
+            "flake8-simplify>=0.21.0",
+            "flake8-print>=5.0.0",
+            "flake8-pytest-style>=1.7.2",
+          ]
+        args: [
+            "--max-line-length=120",
+            "--select=C,E,F,W,B,B950",
+            "--extend-ignore=E203,E501,W503,ANN101,ANN102", # E203/W503 for Black compatibility, ANN101/ANN102 for self/cls
+            "--exclude=.venv,build,dist,docs,*.egg-info,*.egg,*.whl,main.py,*.ipynb",
+          ]
+
+  # Type checking with mypy
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.8.0
+  #   hooks:
+  #     - id: mypy
+  #       additional_dependencies:
+  #         ["types-requests", "pydantic>=2.0.0", "pytest", "types-PyYAML"]
+  #       args:
+  #         [
+  #           "--disallow-untyped-defs",
+  #           "--disallow-incomplete-defs",
+  #           "--check-untyped-defs",
+  #           "--warn-redundant-casts",
+  #           "--warn-return-any",
+  #           "--warn-unused-ignores",
+  #           "--no-implicit-optional",
+  #         ]
+
+  # Security checks with Bandit
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ["--recursive", "--exclude", "tests/"]
+
+  # Check for vulnerable dependencies
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.2
+    hooks:
+      - id: python-safety-dependencies-check
+        files: requirements.*\.txt$
+
+  # Check JSON Schema
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.27.2
+    hooks:
+      - id: check-github-workflows
+
+  # Run tests
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        args:
+          [
+            "--cov=order_processing",
+            "--cov-report=term",
+            "--cov-report=xml",
+            "--cov-branch",
+            "--cov-fail-under=80",
+          ]

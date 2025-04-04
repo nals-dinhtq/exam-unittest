@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from typing import List, Tuple
 
 # Use relative imports within the package
-from .models import Order, APIResponse
+from .models import APIResponse, Order
 
 
 class DatabaseService(ABC):
@@ -33,9 +33,7 @@ class DatabaseService(ABC):
         pass
 
     @abstractmethod
-    def update_order_statuses(
-        self, updates: List[Tuple[int, str, str]]
-    ) -> List[int]:
+    def update_order_statuses(self, updates: List[Tuple[int, str, str]]) -> List[int]:
         """
         Updates the status and priority for multiple orders in a single operation.
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Clean pytest cache files and directories."""
 
-import shutil
 import os
+import shutil
 from pathlib import Path
 from typing import List, Optional
 
@@ -21,13 +21,13 @@ def clean_pytest_cache(root_dir: Optional[Path] = None) -> List[Path]:
     removed_paths: List[Path] = []
 
     # Find and remove .pytest_cache directories
-    for path in root_dir.rglob('.pytest_cache'):
+    for path in root_dir.rglob(".pytest_cache"):
         if path.is_dir():
             shutil.rmtree(path)
             removed_paths.append(path)
 
     # Find and remove .coverage files
-    for path in root_dir.rglob('.coverage*'):
+    for path in root_dir.rglob(".coverage*"):
         if path.is_file():
             os.remove(path)
             removed_paths.append(path)
