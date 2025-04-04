@@ -48,32 +48,74 @@ Here is the structure of the project submission and the purpose of each key file
 
 ```
 
+## Understanding the Order Processing Service Refactoring & Tests
+
+### Original Code: order.py
+
+This file represents the **original implementation** with several characteristics that made testing difficult:
+
+- **Monolithic design**: All functionality in a single file with tight coupling
+- **Direct concrete implementations**: No interfaces or dependency injection
+- **Hard-to-mock dependencies**: Direct file I/O and API calls
+- **Limited error handling**: Basic exception handling
+- **Mixed responsibilities**: Processing, data access, and export logic mixed together
+
+### Refactored Code: order_processing package
+
+The refactored code demonstrates several software engineering best practices:
+
+- **Package structure**: Organized into modules with clear responsibilities
+- **Dependency injection**: External services passed as constructor parameters
+- **Interface abstractions**: Abstract base classes in interfaces.py defining contracts
+- **Improved error handling**: More granular exception types and handling
+- **Single Responsibility Principle**: Separate classes for different concerns
+- **More testable design**: All external dependencies can be easily mocked
+
+### Unit Tests: test_order_processor.py
+
+Unit Test based on the refactored code, focusing on the `OrderProcessingService` class. The tests cover:
+My tests leverage the improved design to achieve high coverage:
+
+- **Comprehensive test suite**: 43 passing tests covering different scenarios
+- **Mock objects**: Using `unittest.mock` to isolate the system under test
+- **Parametrized tests**: For testing boundary conditions
+- **Test fixtures**: Reusable test setup via pytest fixtures
+- **High coverage**: 99% overall with only 4 branch conditions not fully covered
+
+## Key Improvements That Enhanced Testability
+
+1. **Interfaces and DI**: By defining interfaces and using dependency injection, I can easily substitute mock implementations for testing
+2. **Clear separation of concerns**: The refactored code separates business logic from external dependencies
+3. **Better error handling**: More specific exception types make error cases testable
+4. **Pure functions**: Many methods have clearer inputs and outputs, making assertions easier
+5. **Consistent status handling**: Using constants instead of magic strings improves test readability
+
 ## Evaluation Criteria Met
 
 This submission attempts to meet the specified evaluation criteria:
 
-* **[x] Checklist (Test Cases):** The `CHECKLIST.md` file contains the list of test cases identified before writing the test code.
-* **[x] Code Coverage:** `pytest-cov` was used to measure and ensure high code coverage. The goal was full coverage of lines, conditions, and branches within the main processing logic (`order_processing/order_processor.py`).
-* **[x] Full Line, Condition, Branch Coverage:** The detailed coverage results (see **Coverage Evidence** section) show that critical parts of `OrderProcessingService` have been tested.
-* **[x] Adherence to Best Practices & Clean Code:** The test code in `tests/test_order.py` uses `pytest` and common mocking techniques, aiming for clarity, readability, and maintainability.
-* **[x] Verifiable Unit Test Results:** All test cases include clear `assert` statements to verify expected outcomes (order statuses, return values, mock calls).
+- **[x] Checklist (Test Cases):** The `CHECKLIST.md` file contains the list of test cases identified before writing the test code.
+- **[x] Code Coverage:** `pytest-cov` was used to measure and ensure high code coverage. The goal was full coverage of lines, conditions, and branches within the main processing logic (`order_processing/order_processor.py`).
+- **[x] Full Line, Condition, Branch Coverage:** The detailed coverage results (see **Coverage Evidence** section) show that critical parts of `OrderProcessingService` have been tested.
+- **[x] Adherence to Best Practices & Clean Code:** The test code in `tests/test_order.py` uses `pytest` and common mocking techniques, aiming for clarity, readability, and maintainability.
+- **[x] Verifiable Unit Test Results:** All test cases include clear `assert` statements to verify expected outcomes (order statuses, return values, mock calls).
 
 ### Notes on Implementation
 
-* **Use of Mock/Stub:** External dependencies such as `DatabaseService`, `APIClient`, `CsvOrderExporter` (including file I/O), and `time.time` have been mocked using `unittest.mock` (via `pytest` fixtures or `patch`) to isolate `OrderProcessingService` during testing.
-* **Code Fixes and Refactoring:** The unit tests were written against the refactored code version within the `order_processing` package, which already improved the structure and testability compared to the original `order.py` file.
+- **Use of Mock/Stub:** External dependencies such as `DatabaseService`, `APIClient`, `CsvOrderExporter` (including file I/O), and `time.time` have been mocked using `unittest.mock` (via `pytest` fixtures or `patch`) to isolate `OrderProcessingService` during testing.
+- **Code Fixes and Refactoring:** The unit tests were written against the refactored code version within the `order_processing` package, which already improved the structure and testability compared to the original `order.py` file.
 
 ## Submission Directory Structure
 
-* `order_processing/`: Directory containing the source code of the order processing service (refactored).
-* `tests/`: Directory containing the unit test code.
-  * `test_order.py`: The main unit test file using `pytest`.
-* `CHECKLIST.md`: The test case checklist file.
-* `REVIEW-CRITERIA.md`: The evaluation criteria file (provided in the assignment).
-* `requirements.txt`: List of necessary Python libraries (`pytest`, `pytest-cov`, `coverage`).
-* `pytest.ini`: Configuration file for `pytest`, including coverage settings.
-* `README.md`: This file.
-* *(Optional)* `htmlcov/` or coverage report file (`coverage.xml`): Detailed results of the code coverage measurement.
+- `order_processing/`: Directory containing the source code of the order processing service (refactored).
+- `tests/`: Directory containing the unit test code.
+  - `test_order.py`: The main unit test file using `pytest`.
+- `CHECKLIST.md`: The test case checklist file.
+- `REVIEW-CRITERIA.md`: The evaluation criteria file (provided in the assignment).
+- `requirements.txt`: List of necessary Python libraries (`pytest`, `pytest-cov`, `coverage`).
+- `pytest.ini`: Configuration file for `pytest`, including coverage settings.
+- `README.md`: This file.
+- *(Optional)* `htmlcov/` or coverage report file (`coverage.xml`): Detailed results of the code coverage measurement.
 
 ## How to Run Unit Tests and View Coverage
 
